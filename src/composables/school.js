@@ -14,7 +14,19 @@ export default function useSchool(){
         
         schools.value=[]
         working.value=true
-        let {data}=await axios.get(`/schools/mcode/${code}`)
+        let data=null
+        try{
+            let response=await axios.get(`/schools/mcode/${code}`)
+            data=response.data
+            console.log("data:",data)
+        }
+        catch(exc){
+            console.log("Error:",exc)
+            error.value=exc.message
+        }
+        finally{
+            working.value=false
+        }
         const doc = new DOMParser().parseFromString(data, 'text/html');
         const table = doc.querySelector('.sc-table > tbody ');
         let rows=Array.from(table.rows)
@@ -38,7 +50,7 @@ export default function useSchool(){
             schools.value.push(school)
         })
         
-        working.value=false
+       
     }
 
     

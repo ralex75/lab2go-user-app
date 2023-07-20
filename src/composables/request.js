@@ -11,7 +11,6 @@ export default function useRequest(){
     const saveRequest=async(formdata)=>{
         try{
             await axios.post(`/requests/create`,formdata) 
-            router.push({"name":"requests.index"})
         }
         catch(exc){
             error.value=exc
