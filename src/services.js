@@ -1,7 +1,7 @@
 import axios from 'axios'
 
  
-const baseURL={"PROD":'http://lab2go-apps.roma1.infn.it/lab2go/admin/api',
+const baseURL={"PROD":'http://webapp2.roma1.infn.it:9292/api',
                 "DEV":'http://localhost:3000/api'}
 
 
