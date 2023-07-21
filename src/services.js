@@ -9,7 +9,7 @@ const baseURL={"PROD":'http://lab2go-apps.roma1.infn.it/lab2go/admin/api',
 
 // FOR PRODUCTION
 const instance=axios.create({
-  baseURL:baseURL.DEV,
+  baseURL:baseURL.PROD,
   timeout: 1000,
 });
 
