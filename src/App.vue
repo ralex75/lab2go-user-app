@@ -109,6 +109,7 @@
               <div class="mb-3">
                   <label>Prima preferenza</label>
                   <select  class="form-select" v-model="selectedDisci1" >
+                      <option value="">Nessuna</option>
                       <option v-for="d in disciList1"  :value="d" >{{d.text}}</option>
                   </select>
                   <span class="error"></span>
@@ -135,7 +136,7 @@
               <span class="error"></span>
           </div>
           
-          <button type="submit" class="btn btn-primary w-100">Invia richiesta</button>
+          <button type="submit" class="btn btn-primary w-100" >Invia richiesta</button>
    
       </form>
     
@@ -205,19 +206,25 @@ const schoolRule={
 const v$ = useVuelidate(rules, userForm)
 const vschool$=useVuelidate(schoolRule, schoolForm)
 
+const formIsValid=async()=>{
+
+  const userValid   = await v$.value.$validate() 
+  const schoolValid = await vschool$.value.$validate()
+
+  
+  return userValid && schoolValid && schools.value.length && selectedDisci1.value
+
+}
+
 const doSave=async ()=>{
+
+  let _formIsValid=await formIsValid()
+  if(!_formIsValid ) return
 
   userForm.discipline.length=0
   userForm.discipline.push(selectedDisci1.value.text)
   if(selectedDisci2.value) userForm.discipline.push(selectedDisci2.value.text)
   if(selectedDisci3.value) userForm.discipline.push(selectedDisci3.value.text)
-
-  const userValid   = await v$.value.$validate() 
-  const schoolValid = await vschool$.value.$validate()
-
-  if (!userValid || !schoolValid || !schools.value.length) { return }
-
-  if(!userForm.discipline.length){ return }
 
   let emailAlt=userForm.emailAlt
   if(emailAlt.length){
@@ -248,7 +255,7 @@ const discipline=[
   {"value":6,"text":"Robotica"},
   {"value":7,"text":"Scienze della Terra"} ]
 
-const selectedDisci1=ref(discipline[0])
+const selectedDisci1=ref("")
 const selectedDisci2=ref("")
 const selectedDisci3=ref("")
 
