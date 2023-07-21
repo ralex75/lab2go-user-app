@@ -1,11 +1,13 @@
 <template>
   
   <div class="container-fluid">
+    <div style="width: 80%;margin:0 auto;">
       <div style="display: flex;flex-direction: row;justify-content: center;gap:30px;margin:10px 0;">
         <img v-for="img in images" :src="img" style="height:100px;" class="rounded" alt="...">
       </div>
-      <div class="col-md-4 mx-auto">
-      
+      <h2 style="text-align: center;width: 100%;margin-top: 20px;">Richieste di partecipazione a LAB2GO A.S 2023-2024</h2>
+    </div>
+    <div class="col-md-4 mx-auto">
      <div v-if="requestSent">
         <div class="alert alert-success" style="margin-top: 25%;" role="alert" v-if="!error">
             <h4 class="alert-heading">La sua richiesta e' stata sottomessa con successo.</h4>
