@@ -9,8 +9,8 @@ const baseURL={"PROD":'http://webapp2.roma1.infn.it:9292/api',
 
 // FOR PRODUCTION
 const instance=axios.create({
-  baseURL:baseURL.PROD,
-  timeout: 1000,
+  baseURL:baseURL.DEV,
+  timeout: 5000,
 });
 
 

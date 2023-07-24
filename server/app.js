@@ -1,9 +1,11 @@
 const express=require('express')
 const app=express()
 const PORT=3000 //DEFAULT LISTENING PORT
-
+const {configureAPI} = require("./configureAPI")
 app.use(express.static('dist'))
 
+
+configureAPI(app)
 
 app.get("/",(req,res)=>{
     const path=require('path')
@@ -12,6 +14,8 @@ app.get("/",(req,res)=>{
     res.sendFile(path.join(__dirname,'./../dist/index.html'))
 
 })
+
+
 
 
 
