@@ -6,7 +6,7 @@ const global=require("../api/global")
 const router=Router()
 
 
-const sendAskConfirm=async ({baseURL,request})=>{
+const sendAskConfirm=async (request)=>{
 
     const moment=require("moment")
     const {readTemplate,replaceInTemplate}=require("../api/utils")
@@ -14,8 +14,8 @@ const sendAskConfirm=async ({baseURL,request})=>{
     let txt=readTemplate("pending_request.txt")
     txt=replaceInTemplate(txt,JSON.parse(school_json_data))
     txt=replaceInTemplate(txt,JSON.parse(user_json_data))
-    let LINK_ACCEPT=`${baseURL}/api/requests/confirm?tk=${requestToken}&status=accept`
-    let LINK_DISCARD=`${baseURL}/api/requests/confirm?tk=${requestToken}status=discard`
+    let LINK_ACCEPT=`${global.LAB2GO_BASE_URL}api/requests/confirm?tk=${requestToken}&status=accept`
+    let LINK_DISCARD=`${global.LAB2GO_BASE_URL}api/requests/confirm?tk=${requestToken}&status=discard`
     LINK_ACCEPT=`<a href="${LINK_ACCEPT}">accettare</a>`
     LINK_DISCARD=`<a href="${LINK_DISCARD}">scartare</a>`
     let TIME=moment(createdAt).format("HH:mm")
@@ -30,9 +30,9 @@ router.get("/confirm",async (req,res)=>{
     let {tk,status}=req.query
     if(!tk || !status) return res.sendStatus(403)
     if(status!='discard' && status!='accept') return res.sendStatus(403)
-    console.log("QUI")
     const {accept,discard}=require("../api/confirm")
     const actions= {"accept":accept,"discard":discard}
+    console.log("TOKEN:",tk)
     let request=await db.request.findOne({where:{requestToken:tk}})
     if(!request || request.status!='PENDING') return res.sendStatus(403)
     
@@ -71,9 +71,7 @@ router.post("/create",async (req,res)=>{
        
        
         try{
-            const url= `${req.protocol}://${req.get('host')}`
-           
-            sendAskConfirm({baseURL:url,request:request.toJSON()})
+            sendAskConfirm(request.toJSON())
         }
         catch(exc){
             console.log("SendAskConfirm:",exc)

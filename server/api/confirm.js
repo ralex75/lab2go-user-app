@@ -28,7 +28,7 @@ const accept=async (request)=>{
     
 
     user["password"]=request.plesso_mec_code
-    user["LINK_REQUEST_STATUS"]="https://lab2go-apps.roma1.infn.it/lab2go/richieste/"
+    user["LINK_REQUEST_STATUS"]=global.LAB2GO_BASE_URL
 
     let mergedUserData={...user,...JSON.parse(request.user_json_data)}
 
