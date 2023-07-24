@@ -25,12 +25,16 @@ const accept=async (request)=>{
         user=await createAccount({"email":email,"password":code,"name":name,"surname":surname})
     }
 
+    
+
     user["password"]=request.plesso_mec_code
-    user["LINK_REQUEST_STATUS"]="http://lab2gocc3m.roma1.infn.it/requests"
+    user["LINK_REQUEST_STATUS"]="https://lab2go-apps.roma1.infn.it/lab2go/richieste/"
+
+    let mergedUserData={...user,...JSON.parse(request.user_json_data)}
 
     let txt=readTemplate("new_request.txt")
     txt=replaceInTemplate(txt,JSON.parse(request.school_json_data))
-    txt=replaceInTemplate(txt,user)
+    txt=replaceInTemplate(txt,mergedUserData)
     
     sendMail(global.MASTER_MAIL,[user.email,user.emailAlt],"Nuova richiesta di partecipazione",txt,global.LAB2GO_MAIL)
 
