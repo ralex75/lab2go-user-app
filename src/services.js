@@ -9,7 +9,7 @@ const baseURL={"PROD":'api',
 
 // FOR PRODUCTION
 const instance=axios.create({
-  baseURL:baseURL.PROD,
+  baseURL:baseURL.DEV,
   timeout: 5000,
 });
 
