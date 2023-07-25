@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prod": "vite build --base=/lab2go/richieste/",
     "preview": "vite preview"
   },
   "dependencies": {
