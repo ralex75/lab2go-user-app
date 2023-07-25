@@ -1,11 +1,11 @@
 const express=require('express')
 const app=express()
-const PORT=3000 //DEFAULT LISTENING PORT
+const PORT=5000 //DEFAULT LISTENING PORT
 const {configureAPI} = require("./configureAPI")
 app.use(express.static('dist'))
 
 
-configureAPI(app)
+//configureAPI(app)
 
 app.get("/",(req,res)=>{
     const path=require('path')
