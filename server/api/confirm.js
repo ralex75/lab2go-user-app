@@ -28,7 +28,7 @@ const accept=async (request)=>{
     
 
     user["password"]=request.plesso_mec_code
-    user["LINK_REQUEST_STATUS"]=global.LAB2GO_BASE_URL
+    user["LINK_REQUEST_STATUS"]=global.LAB2GO_BASE_URL.DEV
 
     let mergedUserData={...user,...JSON.parse(request.user_json_data)}
 
@@ -45,23 +45,5 @@ const accept=async (request)=>{
 
 }
 
-
-/*router.get("/",async (req,res)=>{
-    let {tk,status}=req.query
-    if(!tk || !status) return res.sendStatus(403)
-    if(status!='discard' && status!='accept') return res.sendStatus(403)
-    
-    const actions= {"accept":accept,"discard":discard}
-    let request=await db.partRequest.findOne({where:{requestToken:tk}})
-    if(!request || request.status!='PENDING') return res.sendStatus(403)
-    try{
-        let result=await actions[status](request)
-        sendMail(global.MASTER_MAIL,global.LAB2GO_MAIL,`[lab2go] Notifica di avvenuta gestione richiesta ID:${request.id}`,result,global.LAB2GO_MAIL)
-        res.send(result)
-    }
-    catch(exc){
-        res.sendStatus(500)
-    }
-})*/
 
 module.exports={accept,discard}
