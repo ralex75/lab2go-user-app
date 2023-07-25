@@ -14,8 +14,8 @@ const sendAskConfirm=async (request)=>{
     let txt=readTemplate("pending_request.txt")
     txt=replaceInTemplate(txt,JSON.parse(school_json_data))
     txt=replaceInTemplate(txt,JSON.parse(user_json_data))
-    let LINK_ACCEPT=`${global.LAB2GO_BASE_URL}/api/requests/confirm?tk=${requestToken}&status=accept`
-    let LINK_DISCARD=`${global.LAB2GO_BASE_URL}/api/requests/confirm?tk=${requestToken}&status=discard`
+    let LINK_ACCEPT=`${global.LAB2GO_BASE_URL.DEV}/api/requests/confirm?tk=${requestToken}&status=accept`
+    let LINK_DISCARD=`${global.LAB2GO_BASE_URL.DEV}/api/requests/confirm?tk=${requestToken}&status=discard`
     LINK_ACCEPT=`<a href="${LINK_ACCEPT}">accettare</a>`
     LINK_DISCARD=`<a href="${LINK_DISCARD}">scartare</a>`
     let TIME=moment(createdAt).format("HH:mm")
