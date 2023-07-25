@@ -20,8 +20,15 @@
             </div>
         </div>
      </div>
+     
+
       <form  @submit.prevent="doSave" v-if="!requestSent">
          
+          
+          <div class="alert alert-danger text-center" style="margin-top: 20%;margin-bottom: 0;" v-if="errSchool" role="alert">
+              <span class="alert-heading">{{ errSchool }}</span>
+          </div>
+          
           <br><br>
           <h2>Istituto</h2>
           <hr>
@@ -39,7 +46,7 @@
                      
                   </div>
                   <div class="col">
-                      <button id="btFindCode" @click="searchCode" type="button" class="btn btn-primary w-100"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;cerca</button>
+                      <button id="btFindCode" @click="searchCode" :disabled="!schoolForm.sc_tab_code" type="button" class="btn btn-primary w-100"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;cerca</button>
                   </div>
               </div>
           </div>
@@ -104,21 +111,23 @@
                         {{ error.$message }}
             </div>
           </div>
-          
+        
           <div class="col-md-6">
               <h4>Discipline</h4>
               <hr>
               <div class="mb-3">
                   <label>Prima preferenza</label>
-                  <select  class="form-select" v-model="selectedDisci1" >
+                  <select  class="form-select" v-model="selectedDisci1" :class="{'is-invalid':!selectedDisci1 && submitted }" >
                       <option value="">Nessuna</option>
                       <option v-for="d in disciList1"  :value="d" >{{d.text}}</option>
                   </select>
-                  <span class="error"></span>
+                  <div class="invalid-feedback">
+                        Disciplina non selezionata
+                  </div>
               </div>
               <div class="mb-3">
                   <label>Seconda preferenza</label>
-                  <select class="form-select" v-model="selectedDisci2">
+                  <select class="form-select" v-model="selectedDisci2" :disabled="!selectedDisci1">
                       <option value="">Nessuna</option>
                       <option v-for="d in disciList2" :value="d" >{{d.text}}</option>
                   </select>
@@ -126,7 +135,7 @@
               <div class="mb-3">
                  
                   <label>Terza preferenza</label>
-                  <select class="form-select" v-model="selectedDisci3" >
+                  <select class="form-select" v-model="selectedDisci3" :disabled="!selectedDisci1" >
                       <option value="">Nessuna</option>
                       <option v-for="d in disciList3" :value="d" >{{d.text}}</option>
                   </select>
@@ -149,7 +158,7 @@
 <script setup>
 import { reactive,ref,computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core'
-import { required, email,helpers } from '@vuelidate/validators'
+import { required,minLength,email,helpers } from '@vuelidate/validators'
 
 import useSchool from '@/composables/school.js'
 import useRequest from '@/composables/request.js'
@@ -166,7 +175,7 @@ const images=[Img1,Img3,Img2,Img5,Img4,Img6]
 
 
 const requestSent=ref(false)
-const {getSchoolInfo, schools, working,error:errSchool}=useSchool()
+const {getSchoolInfo, schools, working, error:errSchool}=useSchool()
 
 const {saveRequest,error:errRequest}=useRequest()
 let schoolForm=reactive({"sc_tab_code":""})
@@ -191,7 +200,10 @@ const multiEmail=(value)=>validateRule(value,"^[\\W]*([\\w+\\-.%]+@[\\w\\-.]+\\.
 
 const curstomNameRule=helpers.withMessage("Il campo non è valido",namesurname)
 const customMultiEmail=helpers.withMessage("Il campo non è valido",multiEmail)
+const customMinLength=helpers.withMessage("Il campo deve essere di almeno 10 caratteri",minLength(10))
 
+
+const submitted=ref(false)
 
 const rules = {
       name: { customRequired,curstomNameRule }, // Matches state.firstName
@@ -202,7 +214,7 @@ const rules = {
 
 
 const schoolRule={
-    sc_tab_code:{required}
+    sc_tab_code:{ customRequired, minLength: customMinLength }
 }
 
 const v$ = useVuelidate(rules, userForm)
@@ -210,16 +222,17 @@ const vschool$=useVuelidate(schoolRule, schoolForm)
 
 const formIsValid=async()=>{
 
+  
   const userValid   = await v$.value.$validate() 
   const schoolValid = await vschool$.value.$validate()
-
-  
+    
   return userValid && schoolValid && schools.value.length && selectedDisci1.value
 
 }
 
 const doSave=async ()=>{
 
+  submitted.value=true
   let _formIsValid=await formIsValid()
   if(!_formIsValid ) return
 
@@ -283,7 +296,12 @@ const showSchoolInfo=(school)=>{
   Object.assign(schoolForm,school)
 }
 
-const searchCode=()=>{
+const searchCode=async ()=>{
+  if(schoolForm.sc_tab_code.length<8 || schoolForm.sc_tab_code.length>10){
+    
+    await vschool$.value.sc_tab_code.$validate()
+    if(vschool$.value.sc_tab_code.$errors.length>0)    return
+  }
   getSchoolInfo(schoolForm.sc_tab_code).then(_=>{
       showSchoolInfo(schools.value[0])
   })
