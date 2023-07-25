@@ -16,6 +16,11 @@ const sendAskConfirm=async (request)=>{
     txt=replaceInTemplate(txt,JSON.parse(user_json_data))
     let LINK_ACCEPT=`${global.LAB2GO_BASE_URL.PROD}/api/requests/confirm?tk=${requestToken}&status=accept`
     let LINK_DISCARD=`${global.LAB2GO_BASE_URL.PROD}/api/requests/confirm?tk=${requestToken}&status=discard`
+    
+    //rimuove eventuali multipli backslash nell'URL
+    LINK_ACCEPT=LINK_ACCEPT.replace(/([^:]\/)\/+/g, "$1")
+    LINK_DISCARD=LINK_DISCARD.replace(/([^:]\/)\/+/g, "$1")
+
     LINK_ACCEPT=`<a href="${LINK_ACCEPT}">accettare</a>`
     LINK_DISCARD=`<a href="${LINK_DISCARD}">scartare</a>`
     let TIME=moment(createdAt).format("HH:mm")
