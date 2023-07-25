@@ -11,21 +11,16 @@ function sendMail(from,to,subj,body,replyTo=null,ext=""){
     });
 
 
-    console.log("ext:",ext)
     
-  
-
+    //se esiste estensione di gruppo per GMAIL fa il replace dell'indirizzo GMAIL con +reqSUB o +reqACC
     if(ext){
         let idx=to_arr.indexOf(mail.LAB2GO_MAIL)
-        console.log("IDX:",idx)
         if(idx>-1){
             let addr=mail.LAB2GO_MAIL.split("@")
             to_arr[idx]=`${addr[0]}+${ext}@${addr[1]}`
-            console.log("to:", to_arr[idx])
         }
     }
 
-    console.log("send to:",to_arr)
     
     let mailOptions={
         from:from,
