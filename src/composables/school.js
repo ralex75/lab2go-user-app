@@ -22,7 +22,7 @@ export default function useSchool(){
         }
         catch(exc){
             console.log("Error:",exc)
-            error.value=exc.message
+            error.value="Spiacenti si è verificato un errore."
 
         }
         finally{

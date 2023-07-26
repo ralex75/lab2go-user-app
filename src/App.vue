@@ -7,7 +7,9 @@
       </div>
       <h2 style="text-align: center;width: 100%;margin-top: 20px;">Richieste di partecipazione a LAB2GO A.S 2023-2024</h2>
     </div>
+    
     <div class="col-md-4 mx-auto">
+      
      <div v-if="requestSent">
         <div class="alert alert-success" style="margin-top: 25%;" role="alert" v-if="!error">
             <h4 class="alert-heading">La sua richiesta e' stata sottomessa con successo.</h4>
@@ -15,17 +17,29 @@
             <p class="mb-0">Per aiuto e/o ulteriori informazioni, la preghiamo di contattare <a href="mailto:info.lab2go@gmail.com">info.lab2go@gmail.com</a></p>
         </div>
         <div v-else>
-            <div class="alert alert-danger mt-6 text-center" style="margin: 60px 0 0 0;" role="alert" v-if="error"> 
+            <div class="alert alert-danger mt-6 text-center" style="margin-top: 60px" role="alert" v-if="error"> 
                     {{error}}
             </div>
         </div>
      </div>
      
-
-      <form  @submit.prevent="doSave" v-if="!requestSent">
+      <div  v-if="!requestSent" style="padding:20px 0">
+      <div class="pending d-flex justify-content-center gap-5 align-items-center" v-if="pending">
+        <div class="spinner-grow text-primary" role="status"></div>
+        <div class="spinner-grow text-secondary" role="status"></div>
+        <div class="spinner-grow text-success" role="status"></div>
+        <div class="spinner-grow text-danger" role="status"></div>
+        <div class="spinner-grow text-warning" role="status"></div>
+        <div class="spinner-grow text-info" role="status"></div>
+        <div class="spinner-grow text-light" role="status"></div>
+        <div class="spinner-grow text-dark" role="status"></div>
+      </div>
+      <div class="alert alert-info text-center" style="margin-top: 50px;" role="alert">
+             <p class="mb-0">Per aiuto e/o ulteriori informazioni, la preghiamo di contattare <a href="mailto:info.lab2go@gmail.com">info.lab2go@gmail.com</a></p>
+      </div>
+      <form  @submit.prevent="doSave">
          
-          
-          <div class="alert alert-danger text-center" style="margin-top: 20%;margin-bottom: 0;" v-if="errSchool" role="alert">
+          <div class="alert alert-danger text-center" style="margin:0;" v-if="errSchool" role="alert">
               <span class="alert-heading">{{ errSchool }}</span>
           </div>
           
@@ -143,14 +157,14 @@
           </div>
           <div class="mb-3">
               <label>Note</label>
-              <textarea id="notes" class="form-control" v-model="userForm.notes" rows="5" cols="33"></textarea>
+              <textarea id="notes" class="form-control" style="resize: none;" v-model="userForm.notes" rows="5" cols="33"></textarea>
               <span class="error"></span>
           </div>
           
-          <button type="submit" class="btn btn-primary w-100" >Invia richiesta</button>
+          <button type="submit" class="btn btn-primary w-100" v-if="pending">Invia richiesta</button>
    
       </form>
-    
+    </div>
   </div>
 </div>
 </template>
@@ -177,13 +191,12 @@ const images=[Img1,Img3,Img2,Img5,Img4,Img6]
 const requestSent=ref(false)
 const {getSchoolInfo, schools, working, error:errSchool}=useSchool()
 
-const {saveRequest,error:errRequest}=useRequest()
+const {saveRequest,error:errRequest,pending}=useRequest()
 let schoolForm=reactive({"sc_tab_code":""})
 let userForm=reactive({"name":"","surname":"","email":"","emailAlt":"","discipline":[],"notes":""})
 
 const customRequired=helpers.withMessage("Il campo non è valido",required)
 const customEmail=helpers.withMessage("Il campo non è valido",email)
-
 
 
 const validateRule=(value,regex)=>{
@@ -313,3 +326,14 @@ const error=computed(()=>{
 
 </script>
 
+<style scoped>
+.pending{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(80, 80, 80, 0.7);
+  z-index: 1000;
+}
+</style>

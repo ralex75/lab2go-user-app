@@ -1,11 +1,11 @@
 const express=require("express")
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const app=express()
-const PORT=5000 //DEFAULT LISTENING PORT
+const PORT=3000 //DEFAULT LISTENING PORT
 app.use(express.static('dist'))
 
 
-app.use('/api', createProxyMiddleware({ target: 'http://localhost:3000', changeOrigin: true }));
+app.use('/api', createProxyMiddleware({ target: 'http://172.17.0.3:3000', changeOrigin: true }));
 
 app.get("/",(req,res)=>{
     const path=require('path')
