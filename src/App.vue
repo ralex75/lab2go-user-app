@@ -161,7 +161,7 @@
               <span class="error"></span>
           </div>
           
-          <button type="submit" class="btn btn-primary w-100" v-if="pending">Invia richiesta</button>
+          <button type="submit" class="btn btn-primary w-100">Invia richiesta</button>
    
       </form>
     </div>
