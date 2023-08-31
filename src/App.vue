@@ -161,7 +161,7 @@
               <span class="error"></span>
           </div>
           
-          <button type="submit" class="btn btn-primary w-100">Invia richiesta</button>
+          <button type="submit" class="btn btn-primary w-100" >Invia richiesta</button>
    
       </form>
     </div>
@@ -227,7 +227,7 @@ const rules = {
 
 
 const schoolRule={
-    sc_tab_code:{ customRequired, minLength: customMinLength }
+  sc_tab_code:{ customRequired, minLength: customMinLength }
 }
 
 const v$ = useVuelidate(rules, userForm)
@@ -307,6 +307,8 @@ const onSchoolChanged=(plesso)=>{
 
 const showSchoolInfo=(school)=>{
   Object.assign(schoolForm,school)
+  //reso necessario cambiare nome per evitare problemi con le API del server
+  schoolForm.sc_tab_code=school.sc_tab_istituto_code
 }
 
 const searchCode=async ()=>{
