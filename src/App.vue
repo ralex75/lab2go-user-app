@@ -194,6 +194,8 @@ const {getSchoolInfo, schools, working, error:errSchool}=useSchool()
 const {saveRequest,error:errRequest,pending}=useRequest()
 let schoolForm=reactive({"sc_tab_code":""})
 let userForm=reactive({"name":"","surname":"","email":"","emailAlt":"","discipline":[],"notes":""})
+//init campi form dati scuola
+const schoolInit={"usr_email_alt":"","usr_email":"","sc_tab_istituto":"","sc_tab_plesso":"","sc_tab_plesso_code":"","sc_tab_email":"","sc_tab_indirizzo":"","sc_tab_telefono":""}
 
 const customRequired=helpers.withMessage("Il campo non è valido",required)
 const customEmail=helpers.withMessage("Il campo non è valido",email)
@@ -232,6 +234,8 @@ const schoolRule={
 
 const v$ = useVuelidate(rules, userForm)
 const vschool$=useVuelidate(schoolRule, schoolForm)
+
+
 
 const formIsValid=async()=>{
 
@@ -306,17 +310,21 @@ const onSchoolChanged=(plesso)=>{
 }
 
 const showSchoolInfo=(school)=>{
+  
+  school = school || schoolInit
   Object.assign(schoolForm,school)
   //reso necessario cambiare nome per evitare problemi con le API del server
-  schoolForm.sc_tab_code=school.sc_tab_istituto_code
+  if(school && school.sc_tab_istituto_code)
+  {
+    schoolForm.sc_tab_code=school.sc_tab_istituto_code
+  }
 }
 
 const searchCode=async ()=>{
-  if(schoolForm.sc_tab_code.length<8 || schoolForm.sc_tab_code.length>10){
-    
-    await vschool$.value.sc_tab_code.$validate()
-    if(vschool$.value.sc_tab_code.$errors.length>0)    return
-  }
+  
+  await vschool$.value.sc_tab_code.$validate()
+  if(vschool$.value.sc_tab_code.$errors.length>0) { return }
+  
   getSchoolInfo(schoolForm.sc_tab_code).then(_=>{
       showSchoolInfo(schools.value[0])
   })
