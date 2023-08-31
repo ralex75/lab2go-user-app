@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "set NODE_ENV=DEV && vite",
     "build": "vite build",
     "prod": "vite build --base=/lab2go/richieste/",
     "preview": "vite preview"
