@@ -1,7 +1,7 @@
 import axios from 'axios'
 
  
-const baseURL={"PROD":'/lab2go/admin/api',
+const baseURL={"PROD":'/lab2go/richieste/api',
                 "DEV":'/api'}
 
 
@@ -9,7 +9,7 @@ const baseURL={"PROD":'/lab2go/admin/api',
 
 // FOR PRODUCTION
 const instance=axios.create({
-  baseURL:baseURL.DEV,
+  baseURL:baseURL.PROD,
   timeout: 5000,
 });
 
