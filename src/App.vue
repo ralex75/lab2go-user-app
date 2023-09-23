@@ -6,7 +6,7 @@
         <img v-for="img in images" :src="img" style="height:100px;" class="rounded" alt="...">
       </div>
       <h2 style="width: 100%;margin-top: 20px;">Richieste di partecipazione a LAB2GO A.S 2023-2024</h2>
-      <a :href="policyURL.PROD" target="_blank">Privacy & Policy</a>
+      <a :href="policyURL.PROD" target="_blank">Privacy Policy</a>
     </div>
 
     <section v-if="settings">
