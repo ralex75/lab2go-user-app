@@ -3,7 +3,7 @@ import axios from "../services"
 
 export default function useAppSettings(){
 
-    const settings=ref({})
+    const settings=ref(null)
     
     const getAllSettings=async ()=>{
         let response=await axios.get("/settings/")
@@ -16,8 +16,7 @@ export default function useAppSettings(){
 
     const allowEditRequest=computed(()=>{
         if(!settings.value) return false
-        return false
-        return new Date()<new Date(settings.value.allow_new_edit_request_date)
+        return new Date()<=new Date(settings.value.allow_new_edit_request_date)
     })
 
     return {
