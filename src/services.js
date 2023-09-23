@@ -1,8 +1,8 @@
 import axios from 'axios'
 
  
-const baseURL={"PROD":'api',
-                "DEV":'http://localhost:3000/api'}
+const baseURL={"PROD":'/lab2go/admin/api',
+                "DEV":'/api'}
 
 
 
