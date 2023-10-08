@@ -6,7 +6,7 @@
         <img v-for="img in images" :src="img" style="height:100px;" class="rounded" alt="...">
       </div>
       <h2 style="width: 100%;margin-top: 20px;">Richieste di partecipazione a LAB2GO A.S 2023-2024</h2>
-      <a :href="policyURL.PROD" target="_blank">Privacy Policy</a>
+      <a :href="policyURL.DEV" target="_blank">Privacy Policy</a>
     </div>
 
     <section v-if="settings">
@@ -38,7 +38,7 @@ import useAppSettings from '@/composables/settings.composable'
 
 const {allowEditRequest,getAllSettings,settings}=useAppSettings()
 
-const policyURL=ref({"PROD":"/lab2go/admin/api/policy","DEV":"http://localhost:3000/policy"})
+const policyURL=ref({"PROD":"/lab2go/admin/api/policy","DEV":"http://localhost:3000/api/policy"})
 
 onMounted(getAllSettings)
 

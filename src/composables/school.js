@@ -49,12 +49,16 @@ export default function useSchool(){
             cells.forEach(c=>{
                
                 let k=c.classList[0].replaceAll("-","_")
-                
-                //pulisce la stringa da eventuali spazi vuoti multipli
-                school[k]=c.children[0].outerText.split(" ").filter(i=>i).join(" ")
-                if(k=='sc_tab_plesso' || k=='sc_tab_istituto')
-                {
-                    school[k+"_code"]=c.children[1].outerText.trim()
+                try{
+                    //pulisce la stringa da eventuali spazi vuoti multipli
+                    school[k]=c.children[0].outerText.split(" ").filter(i=>i).join(" ")
+                    if(k=='sc_tab_plesso' || k=='sc_tab_istituto')
+                    {
+                        school[k+"_code"]=c.children[1].outerText.trim()
+                    }
+                }
+                catch(exc){
+                    console.log("K:",k,"exc",exc)
                 }
             })
 
